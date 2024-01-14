@@ -1,2 +1,2 @@
 # Frontend learning materials
- Here i will post every useful FeE material (code, notes, and corresponding resource)
+ Here i will post every useful Fe material (code, notes, and corresponding resource)
