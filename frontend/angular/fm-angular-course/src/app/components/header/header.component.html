@@ -1,0 +1,11 @@
+<header>
+    <h1>
+        Task Tracker
+    </h1>
+    <app-button
+        *ngIf="hasRoute('/')"
+        text="{{!showAddTask ? 'Add Task' : 'Hide Form'}}" 
+        color="{{!showAddTask ? 'green' : 'red'}}" 
+        (btnClick)="toggleAddTask()"
+    ></app-button>
+</header>

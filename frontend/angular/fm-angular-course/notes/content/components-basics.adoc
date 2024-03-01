@@ -1,0 +1,27 @@
+## Components basics: 
+- if we want to pass a props from other component:
+ * We Add a Input() variable and then we can pass it from the other component inside the html like this: 
+[source, html]
+----
+ <app-button text="Add"></app-button>
+----
+
+- If we want to pass some event for eg. onClick
+ * We add sth like this inside the component file of the clicked element: 
+[source, typescript]
+----
+ @Output() btnClick = new EventEmitter();
+----
+
+ * in html of clicked element we pass the click event: 
+[source, html]
+----
+ <button (click)="onClick()"></button>
+----
+ * In html of element containing our button we pass a chosen function: 
+[source, html]
+----
+<app-button 
+    (btnClick)="toggleAddTask()"
+></app-button>
+----

@@ -1,0 +1,37 @@
+.loader-wrapper {
+    background-color: rgba(black, 0.7);
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.half-size {
+    width: 100vw;
+    height: 50vh;
+    background-color: red;
+}
+
+.loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    border: 10px dotted green;
+    animation: loader_spinning 2s linear infinite;
+    z-index: 3;
+}
+
+@keyframes loader_spinning {
+    from {
+        rotate: 0;
+    }
+    to {
+        rotate: 360deg;
+    }
+}

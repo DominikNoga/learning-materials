@@ -1,0 +1,20 @@
+## Form handling:
+
+- To bind a value to the form we can use a [(ngModel)] directive to bind the value to the variable inside the component.ts like this: +
+HTML
+[source, html]
+<input
+  type="text"
+  name="text"
+  [(ngModel)]="text"
+  id="text"
+  placeholder="Add Task"
+/>
++
+
+Typescript
+[source, typescript]
+text: string = '';
+    
+
+- to exectue the function on subit we are passing the (onSubit) event to a form in html and define a function inside the component.ts file

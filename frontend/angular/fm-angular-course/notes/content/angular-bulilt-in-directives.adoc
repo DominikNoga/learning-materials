@@ -1,0 +1,45 @@
+## Built-in directives
+Angular has a bunch of built-in directives here are the most common ones: +
+
+. *ngFor - allows to iterate over some iterable declared in the component. Morover you have an access to the odd, even and index variables which are pretty self explanatory: +
+[source, html]
+----
+<app-task-item *ngFor="let task of tasks; let e=even; let o=odd; let i=index" [task]="task" (onDeleteTask)="deleteTask(task.id || -1)" (onToggleTask)="updateTask(task)">
+----
+
+. *ngSwitch - allows us to use a swith - case syntax in the html - like below: +
+[source, html]
+----
+<main>
+    <section class="add-new-product">
+        <h4>Add new product</h4>
+    </section>
+    <section class="store-products">
+        <h4>All store products</h4>
+    </section>
+    <section class="placed-orders">
+        <h4>All placed orders</h4>
+    </section>
+    <section class="add-new-user-section">
+        <h4>Add new user</h4>
+    </section>
+</main>
+----
+
+. [ngClass] - allows to add a class basing on some condition
+[source, html]
+----
+<div [ngClass]="isPremium ? 'premium': 'normal'"></div>
+----
+
+. *ngIf - Add an element  to the DOM only if the condition is true
+[source, html]
+----
+<h1 *ngIf="isPremium">You are premium user!</h1>
+----
+
+. [ngStyle] - add inline styles basing on some condition
+[source, html]
+----
+<button [ngStyle]="color: type === 'submit' ? 'green' : 'red'"></button>
+----

@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {
+      "id": 91534,
+      "text": "Zrobić pranie",
+      "day": "pojutrze",
+      "reminder": true
+    },
+    {
+      "id": 69826,
+      "text": "Skończyć ticket",
+      "day": "dzisiaj 12:00",
+      "reminder": false
+    }
+  ]
+}

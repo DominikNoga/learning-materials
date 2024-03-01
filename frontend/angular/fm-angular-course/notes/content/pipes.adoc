@@ -1,0 +1,48 @@
+## Pipes
+Pipes are used for data transformation. It does not change an original object. But thanks to pipe we can display the object in different formats. For example in uppercase
+
+## Built-in Pipes
+Each pipe is described in the documentation under: https://angular.io/api
+
+* DatePipe - allows to change a dispalyed date format
+[source, html]
+----
+<p>
+    {{event.date | date: 'format'}}
+</p>
+----
+
+* lowercase, uppercase, tittlecase (First character capital) pipes - we can set the case in which the string is displayed
+[source, html]
+----
+<p>
+    {{user.name | uppercase }}
+</p>
+----
+
+* CurrencyPipe - we can change the currency type in which the cost of something is displayed. Default is dollar. But we can change the currency like below
+[source, html]
+----
+<p>
+    {{item.price | currency: 'EUR' }}
+</p>
+----
+
+* PercentPipe - converts the number to the percentages
+
+* DecimalPipe - converts the number to chosen format. First part is integeer digits value, then min decimal places, and then max decimal places. So for example if I set it to 1-1-3. My number will always have at least one decimal place but max 3 decimal places. 
+Second part is locale: so we can set the format for a chosen country. Below we chosen France
+[source, html]
+----
+<p>
+    {{ 3.14159265359 | number:'4.1-5':'fr' }}
+    output: 0 003,14159
+</p>
+----
+* JsonPipe - converts the object to JSON format
+
+* SlicePipe - We can cut a part of the array. Like with .slice arrayFunction in JS - example below will render first 10 elements of the array. Not good for large datasets. Like in slice it do not acknowlafge the end index
+[source, html]
+----
+<app-task-item *ngFor="let task of tasks | slice 0:10" [task]="task" (onDeleteTask)="deleteTask(task.id || -1)" (onToggleTask)="updateTask(task)">
+----

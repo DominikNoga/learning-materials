@@ -1,0 +1,46 @@
+# Dependency Injection (a design pattern)
+
+What is dependency? +
+This is a service or object that is needed for a class to perform some function
+
+## DI Providers
+There are 3 types of providers: 
+
+* Class based providers
+* Value providers
+* Factory providers
+
+## DI how to use?
+* Class based + 
+To inject a class based dependency(service) we have to add it inside the controller of the component
+
+[source, typescript]
+----
+  import { Injectable } from '@angular/core';
+  import { ApiService } from '../../apiService/api.service';
+  import Product from 'src/app/interfaces/product.interface';
+
+  @Injectable({
+    providedIn: 'root' // this means that this is resolved in app.modules.ts file
+  })
+  export class ProductsApiServiceService {
+
+    constructor(private apiService: ApiService<Product>) { }
+  }
+----
+
+Ok now we can use the apiSerivce in our component/other service and this is example of the most popular provider which is class based. That means normal service
+
+
+* Factory - We use factory providers to inject already existing services to our angular project. For eg. local storage. In separate file we use sth like this: +
+[source, typescript]
+----
+  import {InjectionToken} from '@angular/core'
+
+  export const LocalStorageToken = new InjectionToken<any>('local storage', {
+    providedIn: 'root',
+    factory() {
+      return localStorage;
+    }
+  })
+----

@@ -1,0 +1,95 @@
+## Lifecycle hooks
+Everything that is happening with a component from init to destroy +
+The hooks are described in the order of getting called
+
+* ngOnChanges - Can be applied to the component only if it has an @Input property. It works when we change some of the Input values then in the body of the function we have access to the SimpleChanges property which holds the previous and current values of the property +
+[source, typescript]
+----
+  export class AdminDashboardComponent implements OnChanges{
+    @Input name: string = '';
+    constructor(private service) { }
+  
+    ngOnChanges(changes: SimpleChanges): void {
+      // changes has one property with a key like a name of the @Input value
+      // this property is an object with previusValue, currentValue and isFirstChange 
+      // properties
+      // To access the property we use [] notation
+      const username = changes['name'].currentValue;
+      setUsername(username);
+    }
+
+  }
+----
+
+* OnInit - Code inside this method will be executed right after the component is constructed. Good practices: in constructor we should only inject services. Do not add any block code. That is going to the NgOnInit hook method
+
+[source, typescript]
+----
+export class AdminDashboardComponent implements OnInit {
+  constructor(private service) { }
+ 
+  ngOnInit(): void {
+    products = service.getProducts();
+  }
+
+}
+----
+
+* DoCheck - Code that is reacting to every possible change/event. This should not be used. So it is working like on NgOnChanges but it reacts to every event and change not only on @Input values 
+
+[source, typescript]
+----
+export class AdminDashboardComponent implements DoCheck {
+  constructor(private service) { }
+ 
+  ngDoCheck(): void {
+    console.log('sth changed');
+  }
+
+}
+----
+
+* AfterContentInit: to understand that hook first we need to unsderstand how the ng-content tag works. So the ng-content is a special tag which allows us to decide in what order we would like to display components placed in our container. Let's assume that we have one angular component named 'container' with html looking like this:
+
+[source, html]
+----
+<ng-content select='app-header'></ng-content>
+<ng-content></ng-content> <!-- here will go anything that does not match the 
+header or footer components  -->
+<ng-content select='app-footer'></ng-content>
+----
+
+So, even if in the file where we use our component we will specify different order it will be displayed in the order used in the app-container
+
+[source, typescript]
+----
+export class Container implements AfterContentInit {
+  
+  // we can use this to have access to the other component
+  @ContentChild(EmployeeComponent) employee !: EmployeeComponent
+  
+  constructor() { }
+
+  ngAfterContentInit(): void {
+    employee.name = 'Tom';
+  }
+}
+----
+
+* ngOnDestroy - runs when the component get's destroyed. When is that exactly? +
+When it is not rendered anymore. For eg. if we have the ng-if to toggle some component and we press sth to hide it. It is removed from the DOM. Then OnDestroy is called. 
+
+** When useful? + 
+  If we have some code that is consuming a lot of memory/power. We can stop using it in the onDestroy method. Especially useful for unsubscribing the data
+
+[source, typescript]
+----
+export class Container implements OnDestroy {
+  
+  constructor() { }
+
+  ngOnDestroy(): void {
+    
+  }
+}
+----

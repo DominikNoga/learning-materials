@@ -1,0 +1,8 @@
+## My Angular notes
+
+include::content/cli-commands.adoc[leveloffset=+1]
+include::content/components-basics.adoc[leveloffset=+1]
+include::content/props-events-bindings.adoc[leveloffset=+1]
+include::content/angular-bulilt-in-directives.adoc[leveloffset=+1]
+include::content/form-handling.adoc[leveloffset=+1]
+include::content/pipes.adoc[leveloffset=+1]

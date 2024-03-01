@@ -1,0 +1,42 @@
+## TypeScript notes
+
+## TypeScript Functions 
+In ts there are many ways of creating a function so it is most reusable and best written here are most of them: 
+
+* Regular functions with types: 
+[source, typescript]
+----
+    function add(num1: number, num2: number): number{
+        return num1 + num2;
+    }
+----
+
+* Functions with spread parameters: 
+
+** Function declaration
+[source, typescript]
+----
+    function add(num1: number, num2: number, ...numbers: number[]): number{
+        return num1 + num2 + numbers.reduce((sum, num) => sum + num, 0);
+    }
+----
+
+** Calling the function + 
+Using this syntax we can pass as many additional arguments as we want. There are all of calling this function: 
+[source, typescript]
+----
+
+    add(1, 2, 3, 4, 5, 6, 7, 8, 9);
+    const numbers = [1, 2, 3, 4, 5, 6, 7];
+    add(1, 2, numbers);
+----
+
+* Generic Functions: allows us to use the chosen type in the function +
+[source, typescript]
+----
+    function getItems<Type>(items: Type): Type[] {
+        return new Array<Type>().concat(items);
+    }
+----
+Type here is a placeholder for the chosen type 
+    

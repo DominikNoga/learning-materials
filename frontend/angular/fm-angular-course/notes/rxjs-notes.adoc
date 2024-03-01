@@ -1,0 +1,128 @@
+## RxJS library
+This is a library that allows us to deal with ractive programming in javascript. +
+The main concept is that we have an Observale that holds some data which can be emitted, after that the emitted data goes to the pipe where it is modified by the some operators. After all needed modifications the data goes to the Observer which can do anything with this.
+Also, rxjs uses push architecture where on the other hand normal fetch uses pull architecture. +
+Pull means that we after modifying the data we have to pull them from api again +
+Push means that we get the continous stream of data, and whem someone will change something the data will be pushed to every subscriber of the Observable
+
+## Observables
+Osbservale is an object that passes some values to it's subscriber. Here is how to create an Observable: 
+[source, javascript]
+const observable = new Observable(subscriber => {
+    // users is the value that we pass to the subscriber
+    subscriber.next(users);
+    // if this will throw an error the line 27 won't be executed 
+    subscriber.next(errorUsers);
+    subscriber.next(users);
+})
+
+## Observers
+This is the subscriber of the Observable. It is an object which has to implement 3 methods:
+
+* next() -> this method is executed when everything is ok with the passed value 
+
+* error() -> this method is executed when something is wrong with the passed value
+
+* complete() -> this method is executed when we want to stop the subscription
+
+Here is the code for the Observer
+[source, javascript]
+----
+const observer = {
+    next: (value) => {
+        console.log('Observer got the value of', value);
+    },
+    error: (err) => {
+        console.error(`Observer got the error: ${err.message}`);
+    },
+    // We can use this method when we want to finish the processing of the data
+    complete: () => {
+        console.log(`Observer got the complete notification`)
+    }
+}
+----
+
+## Pipe
+Pipe is a place where with help of the operators we can modify and verify subscribed data. To use it we simply add the .pipe() after the Observable constructor. Just like this: 
+[source, javascript]
+----
+const observable = new Observable(subscriber => {
+    subscriber.next(users);
+}).pipe(
+    map(users => {
+        // this operator just unpacks the data and passes them to the next operator
+        return users.data
+    }),
+    map(usersArray => {
+        // this operator filters out the inactive users
+        return usersArray.filter(user => user.status !== 'inactive'); 
+    }),
+    map(activeUsers =>{
+        // this operator calculates the average age of the active user
+        return activeUsers.reduce((totalAge, user) => totalAge + user.age, 0)/activeUsers.length;
+    }),
+    map(avgAge => {
+       // the last operator checks the average age of the the user and handle it 
+       if(avgAge < 18){
+        // the error function of the observer will be executed
+        throw new Error(`Average age is too low: ${avgAge}`);
+       }
+       // the next function of the observer will be executed    
+       else return avgAge;
+    }),
+)
+----
+
+## Operators
+Like it is shown up with the pipe. The operator is a one function that modifies our subscribed data. One operator should perform one task. There are many many types of operators. The map operator is the most generic one, where we can specify whole logic by ourself. All operators are explained in the documentation: https://rxjs.dev/guide/operators
+
+## Subscription
+Observable comparing to the Promise is lazy where on the other hand Promise is eager. It means that the Observable won't be called/executed until we subcribe to it. Whereas the Promise is executed right away when it is created. Here is hot to subscribe to the Observable:
+[source, javascript]
+----
+observable.subscribe(observer); // observable is an Observable that we created earlier, same with observer
+----
+
+## More important operators
+* ShareReplay - allows to chache the value that we have downloaded from the api. Thanks to that even when we make several requests to the same endpoint in code. But in reality we make 1 request so it saves us time and memory.
+[source, typescript]
+----
+// SERVICE CODE
+export class TaskService {
+  private taskUrl: string = "http://localhost:5000/tasks";
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+
+  getTasks$ = this.getTasks().pipe(
+    shareReplay(1)
+  )
+
+  constructor(private http: HttpClient) { }
+
+  getTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.taskUrl);
+  };
+}
+
+// COMPONENT WHICH IS MAKING THE REQUESTS TO THE API
+export class TasksComponent implements OnInit {
+  tasks: Task[] = [];
+
+  constructor(private taskService: TaskService) {
+  }
+
+  ngOnInit(): void {
+    // this will be just one request
+    this.taskService.getTasks$.subscribe(tasks => (this.tasks = tasks));
+    this.taskService.getTasks$.subscribe(tasks => (this.tasks = tasks));
+    this.taskService.getTasks$.subscribe(tasks => (this.tasks = tasks));
+    // this will be 3 requests
+    this.taskService.getTasks().subscribe(tasks => (this.tasks = tasks));
+    this.taskService.getTasks().subscribe(tasks => (this.tasks = tasks));
+    this.taskService.getTasks().subscribe(tasks => (this.tasks = tasks));
+  }
+}
+----

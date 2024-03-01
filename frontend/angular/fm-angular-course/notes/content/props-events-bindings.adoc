@@ -1,0 +1,28 @@
+## Props, Events, and Bindings:
+- directive for simple type props: if we want to add props to some component we just pass the prop name and the value like this: 
+[source, html]
+----
+<app-button text="Add"></app-button>
+----
+
+- directive for object type props: if we want to add object props to some component we just pass the prop name and the value like this:
+[source, html]
+----
+<app-task-item *ngFor="let task of tasks" [task]="task"> // So we wrap a prop name with the []
+----
+
+Then in the component file of app-task-item we need to declare the task variable like this: +
+[source, typescript]
+----
+@Input() task: Task;
+----
+
+- event directives: if we want to add an event function to a element we wrap it inside the () for eg.
+[source, html]
+----
+<div
+  [ngClass]="{ reminder: task.reminder }"
+  class="task"
+  (dblclick)="onToggle(task)" // on double click the onToggle function will execute we are defining the function inside the component.ts file
+>
+----

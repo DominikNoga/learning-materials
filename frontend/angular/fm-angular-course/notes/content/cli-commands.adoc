@@ -1,0 +1,5 @@
+## Cli Commands:
+- ng serve -> runs local server
+- ng generate component <component name> -> generates a new component with the given name
+Shortcut: ng g c <component name>
+- ng new <app name> -> generates a new app with the given name
